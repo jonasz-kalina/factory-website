@@ -1096,7 +1096,7 @@
   const dataset = "production";
   const apiVersion = "2024-01-01";
 
-  const query = '*[_type=="homePage"][0]{heroTitle1,heroTitle2,description}';
+  const query = '*[_type=="homePage"][0]{hero{line1,line2,description}}';
   const url = `https://${projectId}.api.sanity.io/v${apiVersion}/data/query/${dataset}?query=${encodeURIComponent(query)}`;
 
   fetch(url)
@@ -1106,9 +1106,9 @@
 
       if (!result) return;
 
-      document.getElementById('heroTitle1').innerText = result.heroTitle1;
-      document.getElementById('heroTitle2').innerText = result.heroTitle2;
-      document.getElementById('description').innerText = result.description;
+      document.getElementById('heroTitle1').innerText = result.hero.line1;
+      document.getElementById('heroTitle2').innerText = result.hero.line2;
+      document.getElementById('description').innerText = result.hero.description;
     });
 </script>
 </body>
