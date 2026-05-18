@@ -206,7 +206,7 @@
 <p id="description">Web Developer</p>
                 </div>
                 <div class="wrapper-description">
-                  <p class="paragraph">I am a <span class="text-span-2">Web Developer</span> at heart and, i create features <br>that are best suited for the job at hand.</p>
+                  <p class="paragraph" id="sectionDescription">I am a <span class="text-span-2">Web Developer</span> at heart and, i create features <br>that are best suited for the job at hand.</p>
                 </div>
                 <div class="wrapper-mini-list-info">
                   <div class="div-block-35">
@@ -224,7 +224,9 @@
               </div>
             </div>
             <div class="wrapper-section-buttons">
-              <a href="#" class="button-4 w-button">Portfolio Factory</a>
+              <a href="#" id="ctaButton" class="button-4 w-button">
+                Portfolio Factory
+              </a>
             </div>
             <div class="wrapper-section-logos-partners">
               <div class="div-block-38">
@@ -1088,27 +1090,44 @@
     </div>
   </div>
   <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=6662caa829bea7d7e7656218" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-  <script src="js/webflow.js" type="text/javascript"></script>.fill-theme {
-  fill: #00bc91;
-  }
-  <script>
+
+<script src="js/webflow.js" type="text/javascript"></script>
+
+<script>
   const projectId = "46e5nje7";
   const dataset = "production";
   const apiVersion = "2024-01-01";
 
-  const query = '*[_type=="homePage"][0]{hero{line1,line2,description}}';
+  const query = '*[_type=="homePage"][0]{hero{line1,line2,description}, sectionDescription, button{ text, link }}';
+
   const url = `https://${projectId}.api.sanity.io/v${apiVersion}/data/query/${dataset}?query=${encodeURIComponent(query)}`;
 
   fetch(url)
     .then(res => res.json())
     .then(data => {
       const result = data.result;
-
       if (!result) return;
 
-      document.getElementById('heroTitle1').innerText = result.hero.line1;
-      document.getElementById('heroTitle2').innerText = result.hero.line2;
-      document.getElementById('description').innerText = result.hero.description;
+      // ✅ HERO
+      document.getElementById('heroTitle1').innerText = result.hero?.line1 || '';
+      document.getElementById('heroTitle2').innerText = result.hero?.line2 || '';
+      document.getElementById('description').innerText = result.hero?.description || '';
+
+      // ✅ OPIS SEKCJI
+      const sectionEl = document.getElementById('sectionDescription');
+      if (sectionEl) {
+        sectionEl.innerText = result.sectionDescription || '';
+      }
+
+      // ✅ BUTTON
+      const cta = document.getElementById('ctaButton');
+      if (cta) {
+        cta.innerText = result.button?.text || 'Kliknij';
+        cta.href = result.button?.link || '#';
+      }
+    })
+    .catch(err => {
+      console.error("Sanity fetch error:", err);
     });
 </script>
 </body>
