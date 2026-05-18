@@ -1,7 +1,5 @@
 backend:
-  name: github
-  repo: jonasz-kalina/factory-website
-  branch: main
+  name: test-repo
 
 media_folder: "images"
 public_folder: "/images"
